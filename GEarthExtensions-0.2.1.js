@@ -6671,11 +6671,18 @@ GEarthExtensions.prototype.view.createBoundsView = function(bounds, options) {
     lookAtRange = options.scaleRange * geo.math.EARTH_RADIUS *
         (Math.sin(beta) * Math.sqrt(1 + 1 / Math.pow(Math.tan(alpha), 2)) - 1);
   }
-  
+  /*
   return this.dom.buildLookAt(
       new geo.Point(center.lat(), center.lng(),
                     bounds.top(), bounds.northEastTop().altitudeMode()),
       { range: lookAtRange });
+	  */
+    var lookAt = this.pluginInstance.getView().copyAsLookAt(this.pluginInstance.ALTITUDE_RELATIVE_TO_GROUND);
+    var centers = new geo.Point(center.lat(), center.lng(), bounds.top(), bounds.northEastTop().altitudeMode());
+    lookAt.setLatitude(centers.lat());
+    lookAt.setLongitude(centers.lng());
+    lookAt.setRange(lookAtRange);
+    return lookAt;
 };
 
 /**
